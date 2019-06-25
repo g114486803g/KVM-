@@ -31,3 +31,40 @@ qcow2 格式支持 snapshot，可以在镜像上做 N 多个快照，具有以�
 VMware 的格式，整体性能最好，因为原本 VMware 就是做虚拟化起家。从性能和功能上来说，vmdk
 应该算最出色的，由于 vmdk 结合了 VMware 的很多能力，目前来看，KVM 和 XEN 使用这种格式的情
 况丌是太多。但就 VMware 的企业级虚拟化 Esxi 来看，它的稳定性和各方面的能力都很好
+----------------------------------------------------------------------------
+qcow2 格式转换成 raw
+关闭虚拟机先如xuegod63-kvm1
+
+qemu-img 的参数
+-f 源镜像的格式
+-O 目标镜像的格式
+例：qcow2 格式转换成 raw
+
+[root@xuegod63 images]# qemu-img convert -f qcow2 -O raw /var/lib/libvirt/images/
+xuegod63-kvm2.img /var/lib/libvirt/images/xuegod63-kvm2.raw
+
+查看转换后的格式，已经转换成了 raw
+[root@xuegod63 images]# qemu-img info /var/lib/libvirt/images/xuegod63-kvm2.raw
+image: /var/lib/libvirt/images/ xuegod63-kvm2.raw
+file format: raw
+
+-----------------------------------------------------------------------
+2.5.2 其他镜像格式转换方法：
+例 1：将 vmdk 转换为 qcow2
+qemu-img convert -f vmdk -O qcow2 source-name.vmdk target-name.qcow2 
+例 2：将 qcow2 转换为 vmdk
+qemu-img convert -f qcow2 -O vmdk source-name.qcow2 target-name.vmdk
+---------------------------------------------------------------------
+2.5.3 修改虚拟机配置文件，使用 raw 格式镜像文件，来启劢虚拟机：
+方法 1：
+[root@xuegod63 ~]# virsh edit xuegod63-kvm2 #修改配置文件
+改：
+<driver name='qemu' type='qcow2' cache='none'/>
+<source file='/var/lib/libvirt/images/xuegod63-kvm2.img'/>
+为：
+23 <driver name='qemu' type='raw' cache='none'/>
+24 <source file='/var/lib/libvirt/images/xuegod63-kvm2.raw'/>
+方法 2：
+#注意 vim 直接编辑配置文件/etc/libvirt/qemu/xuegod63-kvm2.xml 不生效
+修改后，需要重启服务
+[root@xuegod63 ~]# /etc/init.d/libvirtd restart

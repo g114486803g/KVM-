@@ -1,0 +1,25 @@
+# virsh list //查看已打开虚拟机列表
+# virsh list --all //查看所有虚拟机列表
+# virsh version //查看 virsh 版本号
+# virsh start xuegod63-kvm2 //启劢 xuegod63-kvm2 虚拟机
+# virsh shutdown xuegod63-kvm2 //关机 xuegod63-kvm2 虚拟机
+# virsh dumpxml xuegod63-kvm2 > xuegod63-kvm2.xml //导出 xuegod63-kvm2 虚拟机
+配置文件
+[root@xuegod63 images]# virsh dumpxml centos7.0 > centos7.0.xml
+[root@xuegod63 ~]# virsh undefine centos7.0 //取消 centos7.0 定义
+域 centos7.0 已经被取消定义
+
+[root@xuegod63 qemu]# ls /etc/libvirt/qemu #这下面，也没有虚拟机配置文件
+# virsh define 虚拟机.xml 的绝对路径 //把虚拟机重新加入到 virt-manager 目录列表。
+例：
+[root@xuegod63 ~]# virsh define /opt/centos7.0 
+定义域 centos7.0（从 /opt/centos7.0）
+[root@xuegod63 qemu]# ls
+centos7.0.xml networks xuegod63-kvm2.xml
+
+
+[root@xuegod63 ~]# virsh autostart centos7.0 //设置开机自启劢 node1。
+[root@kvm01 ~]# virsh autostart --disable vm1 #取消虚拟机随宿主机开机自启
+[root@kvm01 ~]# virsh suspend vm1 #挂起虚拟机
+[root@kvm01 ~]# virsh resume vm1 #恢复虚拟机
+[root@kvm01 ~]# virsh console vm1 #控制台管理虚拟机

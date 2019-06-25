@@ -3,15 +3,7 @@
 克隆前，centos7.0 需要提前关机。
 语法：virt-clone -o 原虚拟机 -n 新虚拟机 -f 新虚拟机镜像存放路径
 选项：-o old -n new 
-虚拟机镜像： 就是整个虚拟机文件。 丌是操作系统光盘镜像 rhel6.5.iso
-比如：KVM 虚拟机的镜像文件
-[root@xuegod63 ~]# mount /dev/sdb1 /var/lib/libvirt/images/
-[root@xuegod63 ~]# cd /var/lib/libvirt/images/
-[root@xuegod63 images]# ll -h
-总用量 1.2G #实际镜像占用 1.2G
--rw------- 1 root root 9.1G 9 月 21 23:33 centos7.0.qcow2
-#这就是虚拟机镜像文件，丌是操作系统镜像格式是 rhel6.5.iso 
-
+虚拟机镜像： 就是整个虚拟机文件。 不是操作系统光盘镜像 rhel6.5.iso
 
 
 注：虚拟机克隆完毕后，MAC 地址也是需要修改，网卡配置文件也修改一下。
@@ -30,6 +22,6 @@ Clone 'xuegod63-kvm2' created successfully.
 cd  /etc/libvirt/qemu/
 ------------------------------------------------------
  vimdiff php.8.246.xml clone-php.xml 
-文件对比,发现虚拟机磁盘中的 mac 地址已经和克隆后的ＭＡC 地址一样。 可以直接上网，不需要再另外
-删除相关内容。 在 centos6 下，kvm 还没有这样的功能。
+文件对比,发现虚拟机磁盘中的 mac 地址已经和克隆后的ＭＡC 地址一样。 可以直接上网，记得一下克隆好的虚拟机ip哦 不需要再另外
+删除相关内容。 在 centos6 下，kvm 还没有这样的功能。然后直接可以使用了
 

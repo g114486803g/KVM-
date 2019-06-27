@@ -1,0 +1,18 @@
+
+vim /etc/sysconfig/selinux 
+SELINUX=disabled
+
+ yum install qemu-kvm qemu-img \
+ virt-manager libvirt libvirt-python virt-manager \
+ libvirt-client virt-install virt-viewer -y
+
+qemu-kvm: KVM模块
+libvirt: 虚拟管理模块
+virt-manager: 图形界面管理虚拟机
+virt-install: 虚拟机命令行安装工具
+
+. 启动libvirt并设置开机自启动
+
+
+systemctl start libvirtd
+systemctl enable libvirtd

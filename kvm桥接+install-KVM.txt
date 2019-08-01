@@ -1,4 +1,29 @@
+# 安装kvm核心包——虚拟操作系统模拟器加速模块  
+yum -y install qemu-kvm qemu-kvm-tools  
+  
+# 安装kvm管理工具  
+yum -y install libvirt python-virtinst libvirt-python virt-manager libguestfs-tools bridge-utils virt-install  
+# libvirt：必须要装的核心工具  
+# virt-manager：虚拟机图形管理工具（宿主机有桌面环境时可以考虑安装，命令操作或者远程控制则不需要）  
+# bridge-utils：虚拟机与外界通信的命令管理工具  
+# virt-install：虚拟机安装工具  
+# pyhon-virtinst: 包含python模块和工具（virt-install，virt-clone和virt-image）  
+  
+# 重启宿主机，加载kvm相关模块  
+reboot  
+  
+# 查看kvm模块是否被正确加载  
+lsmod | grep kvm  
+# 出现以下信息则表示正确加载  
+# kvm_intel               162153 0  
+# kvm                     525259 1 kvm_intel  
+# irqbypass               13503  1 kvm  
+  
+# 开启kvm服务，并设置开机启动  
+systemctl start libvirtd.service  
+systemctl enable libvirtd.service 
 
+------------------------------------------------------
 yum -y install bridge-utils
 
 先备份cp ifcfg-eth0 ifcfg-eth0-abc

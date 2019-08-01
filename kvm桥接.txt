@@ -1,0 +1,47 @@
+
+先备份cp ifcfg-eth0 ifcfg-eth0-abc
+
+创建一张网卡配置
+[root@tewstsadad network-scripts]# vim ifcfg-bmj 
+NAME="bmj"
+DEVICE="bmj"
+BOOTPROTO="none"
+NETBOOT="yes"
+TYPE="Bridge"
+ONBOOT="yes"
+IPV6INIT="no"
+NM_CONTROLLED="no"
+TYPE="Bridge"
+IPADDR="192.168.31.71"
+PREFIX="24"
+GATEWAY="192.168.31.1"
+DNS1="114.114.114.114"
+
+在编辑ifcfg-eth0网卡如下：
+[root@tewstsadad network-scripts]# vim ifcfg-eth0
+NAME="eth0"
+DEVICE="eth0"
+ONBOOT="yes"
+BOOTPROTO="none"
+NM_CONTROLLED="no"
+BRIDGE="bmj"
+
+不用重启网卡直接生效
+[root@tewstsadad network-scripts]#  brctl show
+bridge name	bridge id		STP enabled	interfaces
+bmj		8000.5254000d5e29	no		eth0
+							vnet0
+virbr0		8000.525400233c06	yes		virbr0-nic
+
+
+删除如下：
+
+brctl delif bmj eth0    #解除绑定
+ifconfig bmj down     #关闭br0,不关闭删不掉
+brctl delbr bmj    #删除br0
+
+后面发现前面br0与eth0的绑定消失了，在过程中自动取消了绑定
+重新绑定：
+
+brctl addif bmj eth0
+service network restart

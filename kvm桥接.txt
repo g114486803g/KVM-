@@ -47,3 +47,53 @@ brctl delbr bmj    #删除br0
 
 brctl addif bmj eth0
 service network restart
+==========================================
+删除多余的virbr0网卡
+
+[root@tewstsadad ~]# brctl show
+bridge name	bridge id		STP enabled	interfaces
+bmj		8000.5254000d5e29	no		eth0
+virbr0		8000.525400233c06	yes		virbr0-nic
+
+[root@tewstsadad ~]# virsh net-destroy default 
+Network default destroyed
+
+[root@tewstsadad ~]# virsh net-undefine default 
+Network default has been undefined
+
+[root@tewstsadad ~]# systemctl restart libvirtd.service 
+[root@tewstsadad ~]# brctl show
+bridge name	bridge id		STP enabled	interfaces
+bmj		8000.5254000d5e29	no		eth0
+
+
+已消失
+[root@tewstsadad ~]# ifconfig 
+bmj: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.31.71  netmask 255.255.255.0  broadcast 192.168.31.255
+        inet6 fe80::5054:ff:fe0d:5e29  prefixlen 64  scopeid 0x20<link>
+        ether 52:54:00:0d:5e:29  txqueuelen 1000  (Ethernet)
+        RX packets 10510  bytes 493087 (481.5 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 197  bytes 24056 (23.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        ether 52:54:00:0d:5e:29  txqueuelen 1000  (Ethernet)
+        RX packets 1317326  bytes 1517912163 (1.4 GiB)
+        RX errors 0  dropped 5  overruns 0  frame 0
+        TX packets 716196  bytes 386995733 (369.0 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 101624  bytes 337643840 (322.0 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 101624  bytes 337643840 (322.0 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@tewstsadad ~]# 
+
+

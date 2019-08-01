@@ -1,4 +1,6 @@
 
+yum -y install bridge-utils
+
 先备份cp ifcfg-eth0 ifcfg-eth0-abc
 
 创建一张网卡配置

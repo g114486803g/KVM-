@@ -1,0 +1,83 @@
+从virtbox上COPY *.vdi文件到虚拟机目录 之后做一个各种转行
+qemu-img convert centos610.vdi -O qcow2 new-centos6.qcow2
+
+[root@vip ~]# qemu-img info  /jbjb/data/new-centos6.qcow2 
+image: /jbjb/data/new-centos6.qcow2
+file format: qcow2
+virtual size: 8.0G (8589934592 bytes)
+disk size: 1.4G
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    lazy refcounts: false
+
+2.使用以下命令启动虚拟机
+virt-install -n x2 -r 2048 --vcpus 2 --disk path=/jbjb/data/new-centos6.qcow2 --network bridge=jbjb --boot hd
+----------------以上完成--------------------------------------
+
+3.开始修改网络信息
+
+获取mac新地址52:54:00:fe:e2:20 旧的mac地址是"08:00:27:43:b3:28
+[root@localhost ~]# egrep -v "#|^$" /etc/udev/rules.d/70-persistent-net.rules
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="08:00:27:43:b3:28", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="52:54:00:fe:e2:20", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"
+
+
+4.将新的MAC地址绑定到网卡上
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth1 
+DEVICE=eth1
+HWADDR=52:54:00:fe:e2:20
+TYPE=Ethernet
+UUID=1a0e4422-580b-4c04-b1a1-d5c9d62afc25
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=static
+IPADDR=172.16.8.212
+NETMASK=255.255.255.0
+GATEWAY=172.16.8.1
+DNS1=114.114.114.114
+ARPCHECK=no
+
+查看HWaddr 52:54:00:FE:E2:20   地址相同
+[root@localhost ~]# ifconfig eth1
+eth1      Link encap:Ethernet  HWaddr 52:54:00:FE:E2:20  
+          inet addr:172.16.8.212  Bcast:172.16.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::5054:ff:fefe:e220/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:38624 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2522 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3578564 (3.4 MiB)  TX bytes:479926 (468.6 KiB)
+
+
+重启网卡生效
+service network restart
+
+也可以直接修改mac地址
+vim  /etc/libvirt/qemu/x2.xml
+--------------------------------------------------------------------------
+参考
+https://www.cnblogs.com/gracejiang/p/6109085.html
+
+----------------------------------------------------------------
+
+添加2G磁盘 减直接使用 -2G
+[root@vip data]# qemu-img resize new-centos6.qcow2 +2G
+Image resized.
+[root@vip data]# qemu-img info  new-centos6.qcow2 
+image: new-centos6.qcow2
+file format: qcow2
+virtual size: 10G (10737418240 bytes)
+disk size: 3.4G
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    lazy refcounts: false
+    
+    
+    
+
+
+
+
+

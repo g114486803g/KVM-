@@ -1,4 +1,4 @@
-从virtbox上COPY *.vdi文件到虚拟机目录 之后做一个各种转行
+0.从virtbox上COPY *.vdi文件到虚拟机目录 之后做一个转行
 qemu-img convert centos610.vdi -O qcow2 new-centos6.qcow2
 
 [root@vip ~]# qemu-img info  /jbjb/data/new-centos6.qcow2 

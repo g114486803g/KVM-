@@ -23,3 +23,31 @@ centos7.0.xml networks xuegod63-kvm2.xml
 [root@kvm01 ~]# virsh suspend vm1 #挂起虚拟机
 [root@kvm01 ~]# virsh resume vm1 #恢复虚拟机
 [root@kvm01 ~]# virsh console vm1 #控制台管理虚拟机
+
+
+
+远程执行KVM shell
+abc@abcd:~$ virsh -c qemu+ssh://root@172.16.8.225/system "list"
+ Id   Name           State
+------------------------------
+ 1    xy-8-70        running
+ 3    gitlab8.201    running
+ 4    zhifu-8.211    running
+ 5    docker-8.203   running
+
+
+远程进入KVM
+abc@abcd:~$ virsh -c qemu+ssh://root@172.16.8.225/system 
+Welcome to virsh, the virtualization interactive terminal.
+
+Type:  'help' for help with commands
+       'quit' to quit
+
+virsh # list
+ Id   Name           State
+------------------------------
+ 1    xy-8-70        running
+ 3    gitlab8.201    running
+ 4    zhifu-8.211    running
+
+

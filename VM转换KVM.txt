@@ -1,0 +1,13 @@
+转换qcow2
+qemu-img convert ttsd-8.39-flat.vmdk -O qcow2 new-vmdk-8-39.qcow2
+
+启动
+virt-install -n x2 -r 2048 --vcpus 2 --disk path=/dvd/dobi/mvc/new-vmdk-8-39.qcow2 --network bridge=jbjb --boot hd
+
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+其实直接留vmdk后缀也可以　。如下：
+
+qemu-img convert ttsd-8.39-flat.vmdk -O qcow2 new-vmdk-8-39.vmdk
+
+－－－－－－启动之后请改网卡ｍａｃ地址

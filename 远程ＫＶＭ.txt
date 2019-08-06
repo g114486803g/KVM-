@@ -1,0 +1,8 @@
+远程进入虚拟机xy.8-118
+virt-viewer --connect qemu+ssh://root@172.16.8.225/system xy.8-118
+
+远程控制虚拟机列表
+virt-viewer --connect qemu+ssh://root@172.16.8.242/system "list"
+
+远程查看虚拟机列表
+virsh -c qemu+ssh://root@172.16.8.242/system "list"

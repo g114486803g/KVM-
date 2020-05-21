@@ -1,0 +1,19 @@
+vim-cmd vmsvc/getallvms （获取所有虚拟机的vmid信息） 
+关闭虚拟机：vim-cmd vmsvc/power.off 3
+打开虚拟机：vim-cmd vmsvc/power.on 3
+重启虚拟机：vim-cmd vmsvc/power.reset 3
+获取虚拟机的当前状态：vim-cmd vmsvc/power.getstate 3
+
+
+2.使用esxi主机的esxcli命令来关闭vm
+esxcli vm process list （获取正在运行的虚拟机的信息）
+
+
+
+警告：这个操作对esxi母机有潜在的危险，如果你不能正确的辨别进程的ID，而误杀了其他的进程，就会导致不可
+预期的后果，所以一般尽量不要去用这种方法。
+1）要知道esxi下面有没有虚拟机在运行可以使用下面的命令：
+ps | grep vmx （分别是pid,父进程，调用的服务）
+2）从上面可以看出我的tw08c011s2这台虚拟机的父进程是247107，那么我只要把它kill掉就ok了 。即：
+终止虚拟机的父进程： kill 247107
+强制终止：kill -9 247107

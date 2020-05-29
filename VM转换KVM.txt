@@ -11,3 +11,12 @@ virt-install -n x2 -r 2048 --vcpus 2 --disk path=/dvd/dobi/mvc/new-vmdk-8-39.qco
 qemu-img convert ttsd-8.39-flat.vmdk -O qcow2 new-vmdk-8-39.vmdk
 
 －－－－－－启动之后请改网卡ｍａｃ地址
+
+
+-------
+
+https://bugzilla.redhat.com/show_bug.cgi?id=847425
+
+strace -f -e trace=open qemu-img convert -O  raw   /media/9a237ce7-ffd6-4872-acc6-d0966783f992/exports/kstest/kstest-disk1.vmdk   /tmp/kstest-disk1.img
+
+
